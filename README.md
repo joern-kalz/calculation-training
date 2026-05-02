@@ -4,7 +4,8 @@ A fun and engaging web game designed to train number bonds.
 
 ## Introduction
 
-Number bonds are crucial for learning addition and subtraction, acting as a foundational tool for early math proficiency. By identifying which pairs of numbers make a larger number (e.g., 3 and 7 make 10), children develop number sense, improve mental math speed, and understand the inverse relationship between adding and subtracting.
+Number bonds are crucial for learning addition and subtraction, acting as a foundational tool for early math proficiency. By identifying which pairs of numbers make a larger number (e.g., 3 and 7 make 10), children develop number sense, improve mental math speed, and understand the inverse relationship between adding and subtracting. The timer supports the transition from 
+finger-counting to knowing the answer.
 
 ▶️ [**Try it out**](https://joern-kalz.github.io/calculation-training/)
 
