@@ -1,65 +1,87 @@
-import Image from "next/image";
+'use client';
+
+import confetti from 'canvas-confetti';
+import { useEffect, useState } from 'react';
+import { Lost } from './components/Lost';
+import { Playing } from './components/Playing';
+import { Selecting } from './components/Selecting';
+import { Won } from './components/Won';
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  const [target, setTarget] = useState<number | null>(null);
+  const [numbers, setNumbers] = useState<number[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(10);
+  const [gameState, setGameState] = useState<'selecting' | 'playing' | 'won' | 'lost'>('selecting');
+  const [shakingButton, setShakingButton] = useState<number | null>(null);
+
+  const selectTarget = (n: number) => {
+    setTarget(n);
+    const nums = Array.from({ length: n + 1 }, (_, i) => i);
+    // Shuffle
+    for (let i = nums.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [nums[i], nums[j]] = [nums[j], nums[i]];
+    }
+    setNumbers(nums);
+    setCurrentIndex(0);
+    setTimeLeft(10);
+    setGameState('playing');
+  };
+
+  const handleClick = (x: number) => {
+    if (x === target! - numbers[currentIndex]) {
+      if (currentIndex + 1 === numbers.length) {
+        setGameState('won');
+        confetti({
+          particleCount: 500,
+          spread: 180,
+          startVelocity: 60,
+          origin: { y: 0.6 },
+          ticks: 2000,
+        });
+      } else {
+        setCurrentIndex(currentIndex + 1);
+        setTimeLeft(10);
+      }
+    } else {
+      setShakingButton(x);
+      setTimeout(() => setShakingButton(null), 500);
+    }
+  };
+
+  const resetGame = () => {
+    setTarget(null);
+    setNumbers([]);
+    setCurrentIndex(0);
+    setTimeLeft(10);
+    setGameState('selecting');
+  };
+
+  useEffect(() => {
+    if (gameState === 'playing' && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0) {
+      setGameState('lost');
+    }
+  }, [timeLeft, gameState]);
+
+  if (gameState === 'selecting') {
+    return <Selecting onSelectTarget={selectTarget} />;
+  } else if (gameState === 'won') {
+    return <Won onPlayAgain={resetGame} />;
+  } else if (gameState === 'lost') {
+    return <Lost onTryAgain={resetGame} />;
+  } else {
+    return (
+      <Playing
+        target={target!}
+        currentNumber={numbers[currentIndex]}
+        timeLeft={timeLeft}
+        shakingButton={shakingButton}
+        onClickButton={handleClick}
+      />
+    );
+  }
 }
