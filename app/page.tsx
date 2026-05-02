@@ -1,18 +1,20 @@
-'use client';
+"use client";
 
-import confetti from 'canvas-confetti';
-import { useEffect, useState } from 'react';
-import { Lost } from './_components/Lost';
-import { Playing } from './_components/Playing';
-import { Selecting } from './_components/Selecting';
-import { Won } from './_components/Won';
+import confetti from "canvas-confetti";
+import { useEffect, useState } from "react";
+import { Lost } from "./_components/Lost";
+import { Playing } from "./_components/Playing";
+import { Selecting } from "./_components/Selecting";
+import { Won } from "./_components/Won";
 
 export default function Home() {
   const [target, setTarget] = useState<number | null>(null);
   const [numbers, setNumbers] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
-  const [gameState, setGameState] = useState<'selecting' | 'playing' | 'won' | 'lost'>('selecting');
+  const [gameState, setGameState] = useState<
+    "selecting" | "playing" | "won" | "lost"
+  >("selecting");
   const [shakingButton, setShakingButton] = useState<number | null>(null);
 
   const selectTarget = (n: number) => {
@@ -26,13 +28,13 @@ export default function Home() {
     setNumbers(nums);
     setCurrentIndex(0);
     setTimeLeft(10);
-    setGameState('playing');
+    setGameState("playing");
   };
 
   const handleClick = (x: number) => {
     if (x === target! - numbers[currentIndex]) {
       if (currentIndex + 1 === numbers.length) {
-        setGameState('won');
+        setGameState("won");
         confetti({
           particleCount: 500,
           spread: 180,
@@ -55,14 +57,14 @@ export default function Home() {
     setNumbers([]);
     setCurrentIndex(0);
     setTimeLeft(10);
-    setGameState('selecting');
+    setGameState("selecting");
   };
 
   useEffect(() => {
-    if (gameState === 'playing' && timeLeft > 0) {
+    if (gameState === "playing" && timeLeft > 0) {
       const timer = setTimeout(() => {
         if (timeLeft === 1) {
-          setGameState('lost');
+          setGameState("lost");
         } else {
           setTimeLeft(timeLeft - 1);
         }
@@ -72,11 +74,11 @@ export default function Home() {
     }
   }, [timeLeft, gameState]);
 
-  if (gameState === 'selecting') {
+  if (gameState === "selecting") {
     return <Selecting onSelectTarget={selectTarget} />;
-  } else if (gameState === 'won') {
+  } else if (gameState === "won") {
     return <Won onPlayAgain={resetGame} />;
-  } else if (gameState === 'lost') {
+  } else if (gameState === "lost") {
     return <Lost onTryAgain={resetGame} />;
   } else {
     return (
