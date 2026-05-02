@@ -7,8 +7,8 @@ vi.mock('canvas-confetti');
 let confettiMock: ReturnType<typeof vi.fn>;
 
 async function loadConfettiMock() {
-    const module = await import('canvas-confetti');
-    confettiMock = vi.mocked(module.default);
+    const confettiModule = await import('canvas-confetti');
+    confettiMock = vi.mocked(confettiModule.default);
 }
 
 function getQuestionText() {

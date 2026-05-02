@@ -60,10 +60,15 @@ export default function Home() {
 
   useEffect(() => {
     if (gameState === 'playing' && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      const timer = setTimeout(() => {
+        if (timeLeft === 1) {
+          setGameState('lost');
+        } else {
+          setTimeLeft(timeLeft - 1);
+        }
+      }, 1000);
+
       return () => clearTimeout(timer);
-    } else if (timeLeft === 0) {
-      setGameState('lost');
     }
   }, [timeLeft, gameState]);
 
