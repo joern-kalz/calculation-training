@@ -2,10 +2,10 @@
 
 import confetti from 'canvas-confetti';
 import { useEffect, useState } from 'react';
-import { Lost } from './components/Lost';
-import { Playing } from './components/Playing';
-import { Selecting } from './components/Selecting';
-import { Won } from './components/Won';
+import { Lost } from './_components/Lost';
+import { Playing } from './_components/Playing';
+import { Selecting } from './_components/Selecting';
+import { Won } from './_components/Won';
 
 export default function Home() {
   const [target, setTarget] = useState<number | null>(null);
