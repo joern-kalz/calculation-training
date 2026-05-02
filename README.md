@@ -21,8 +21,7 @@ Number bonds are crucial for learning addition and subtraction, acting as a foun
 
 ### Prerequisites
 
-- Node.js 18+ 
-- pnpm (or npm/yarn)
+- Install [pnpm](https://pnpm.io/)
 
 ### Installation
 
