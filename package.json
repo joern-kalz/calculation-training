@@ -7,8 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prettier-fix": "prettier --write ./app/**/*.{ts,tsx}",
-    "prettier-check": "prettier --check ./app/**/*.{ts,tsx}",
     "test": "vitest run"
   },
   "dependencies": {
@@ -29,6 +27,8 @@
     "@vitest/coverage-v8": "4.1.5",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "jsdom": "^29.1.1",
     "prettier": "^3.8.3",
     "tailwindcss": "^4",

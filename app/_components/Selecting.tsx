@@ -4,7 +4,11 @@ interface SelectingProps {
   onTimeoutChange: (value: number) => void;
 }
 
-export function Selecting({ onSelectTarget, timeoutDuration, onTimeoutChange }: SelectingProps) {
+export function Selecting({
+  onSelectTarget,
+  timeoutDuration,
+  onTimeoutChange,
+}: SelectingProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500">
       <h1 className="text-5xl font-bold mb-8 text-white drop-shadow-lg">
@@ -23,7 +27,9 @@ export function Selecting({ onSelectTarget, timeoutDuration, onTimeoutChange }: 
         ))}
       </div>
       <div className="mt-8 text-white text-center">
-        <label className="block mb-2 text-xl">Timeout per round: {timeoutDuration}s</label>
+        <label className="block mb-2 text-xl">
+          Timeout per round: {timeoutDuration}s
+        </label>
         <input
           type="range"
           min="1"

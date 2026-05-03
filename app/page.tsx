@@ -76,7 +76,13 @@ export default function Home() {
   }, [timeLeft, gameState]);
 
   if (gameState === "selecting") {
-    return <Selecting onSelectTarget={selectTarget} timeoutDuration={timeoutDuration} onTimeoutChange={setTimeoutDuration} />;
+    return (
+      <Selecting
+        onSelectTarget={selectTarget}
+        timeoutDuration={timeoutDuration}
+        onTimeoutChange={setTimeoutDuration}
+      />
+    );
   } else if (gameState === "won") {
     return <Won onPlayAgain={resetGame} />;
   } else if (gameState === "lost") {
