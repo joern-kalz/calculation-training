@@ -16,6 +16,7 @@ export default function Home() {
     "selecting" | "playing" | "won" | "lost"
   >("selecting");
   const [shakingButton, setShakingButton] = useState<number | null>(null);
+  const [timeoutDuration, setTimeoutDuration] = useState(10);
 
   const selectTarget = (n: number) => {
     setTarget(n);
@@ -27,7 +28,7 @@ export default function Home() {
     }
     setNumbers(nums);
     setCurrentIndex(0);
-    setTimeLeft(10);
+    setTimeLeft(timeoutDuration);
     setGameState("playing");
   };
 
@@ -44,7 +45,7 @@ export default function Home() {
         });
       } else {
         setCurrentIndex(currentIndex + 1);
-        setTimeLeft(10);
+        setTimeLeft(timeoutDuration);
       }
     } else {
       setShakingButton(x);
@@ -56,7 +57,7 @@ export default function Home() {
     setTarget(null);
     setNumbers([]);
     setCurrentIndex(0);
-    setTimeLeft(10);
+    setTimeLeft(timeoutDuration);
     setGameState("selecting");
   };
 
@@ -75,7 +76,7 @@ export default function Home() {
   }, [timeLeft, gameState]);
 
   if (gameState === "selecting") {
-    return <Selecting onSelectTarget={selectTarget} />;
+    return <Selecting onSelectTarget={selectTarget} timeoutDuration={timeoutDuration} onTimeoutChange={setTimeoutDuration} />;
   } else if (gameState === "won") {
     return <Won onPlayAgain={resetGame} />;
   } else if (gameState === "lost") {
